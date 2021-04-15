@@ -43,6 +43,12 @@ flutter:
       fonts:
         - asset: fonts/nunito_bold.ttf
 
+    - family: NunitoRegular
+      fonts:
+        - asset: fonts/nunito_regular.ttf
+  assets:
+    - images/ic_celular.png
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

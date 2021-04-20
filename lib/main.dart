@@ -1,113 +1,89 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
-    title: "Módulo detalhe de parceiros",
     home: Screen(),
   ));
 }
 
 class Screen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => ScreenState();
+  _ScreenState createState() => _ScreenState();
 }
 
-class ScreenState extends State<Screen> {
+class _ScreenState extends State<Screen> {
   @override
   Widget build(BuildContext context) {
     MaterialColor redColor = MaterialColor(0xFFCF2860, redColors);
     MaterialColor browColor = MaterialColor(0xFF8a8a8a, browColors);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      // para expandir lateralmente  e ocupar tudo
-      children: [
-        Flexible(
-            flex: 3,
-            child: Stack(
-              fit: StackFit.expand,
-              // para expandir lateralmente e ocupar tudo o espaço
-              children: [
-                Image(
-                    image: NetworkImage(
-                        'https://firebasestorage.googleapis.com/v0/b/vidalink-static.appspot.com/o/Images%2Fshared%2Fxxxhdpi640dpi-android.png?alt=media&token=6f8fc9a5-762f-4dfa-8985-c2188de828a3'),
-                    fit: BoxFit.cover),
-                Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                        margin: EdgeInsets.fromLTRB(34, 0, 34, 20),
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          child: Text('Confira os produtos',
-                              style: TextStyle(
-                                  fontSize: 18, fontFamily: 'Nunito')),
-                          style: ElevatedButton.styleFrom(
-                              primary: redColor[900],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(30.0),
-                              ),
-                              padding: EdgeInsets.all(12)),
-                          onPressed: () {
-                            print('Pressed');
-                          },
-                        ))),
-              ],
-            )),
-        Flexible(
-            flex: 4,
-            child: PageView(
-              children: <Widget>[
-                Container(
-                    color: Colors.white,
-                    child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Container(
-                          margin: EdgeInsets.fromLTRB(34, 34, 34, 0),
-                          height: 144,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(6.0),
-                            ),
-                            elevation: 6,
+    return Scaffold(
+      body: Column(
+        children: [
+          Flexible(
+              flex: 3,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image(
+                      image: NetworkImage(
+                          'https://firebasestorage.googleapis.com/v0/b/vidalink-static.appspot.com/o/Images%2Fshared%2Fxxxhdpi640dpi-android.png?alt=media&token=6f8fc9a5-762f-4dfa-8985-c2188de828a3'),
+                      fit: BoxFit.cover),
+                  Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                          margin: EdgeInsets.fromLTRB(34, 0, 34, 20),
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            child: Text('Confira os produtos',
+                                style: TextStyle(
+                                    fontSize: 18, fontFamily: 'Nunito')),
+                            style: ElevatedButton.styleFrom(
+                                primary: redColor[900],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(30.0),
+                                ),
+                                padding: EdgeInsets.all(12)),
+                            onPressed: () {
+                              print('Pressed');
+                            },
+                          )))
+                ],
+              )),
+          Flexible(
+              flex: 4,
+              child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                      margin: EdgeInsets.fromLTRB(34, 34, 34, 0),
+                      height: 144,
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6.0),
+                          ),
+                          elevation: 6,
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                             child: Row(
                               children: [
                                 Container(
-                                    margin: EdgeInsets.fromLTRB(20, 20, 0, 20),
+                                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                                     child: Image(
                                         image: AssetImage(
                                             'images/ic_celular.png'))),
-                                Flexible(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                          margin: EdgeInsets.all(20),
-                                          child: Text(
-                                            "Nós queremos te ajudar a ter uma alimentação saudável todos os dias e contamos com um grande parceiro para isso:  a Zona Cerealista Online.",
-                                            style: TextStyle(
-                                                fontFamily: 'NunitoRegular',
-                                                color: browColor,
-                                                fontSize: 14),
-                                          )
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                Expanded(
+                                    child: SingleChildScrollView(
+                                        child: Text(
+                                  'Nós queremos te ajudar a ter uma alimentação saudável todos os dias e contamos com um grande parceiro para isso:  a Zona Cerealista Online.',
+                                  style: TextStyle(
+                                      fontFamily: 'NunitoRegular',
+                                      color: browColor,
+                                      fontSize: 15),
+                                )))
                               ],
                             ),
-                          ),
-                        ))),
-                Container(
-                  color: Colors.cyan,
-                ),
-                Container(
-                  color: Colors.deepPurple,
-                ),
-              ],
-            ))
-      ],
+                          ))))),
+        ],
+      ),
     );
   }
 }

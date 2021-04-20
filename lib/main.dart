@@ -51,37 +51,45 @@ class _ScreenState extends State<Screen> {
               )),
           Flexible(
               flex: 4,
-              child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                      margin: EdgeInsets.fromLTRB(34, 34, 34, 0),
-                      height: 144,
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0),
-                          ),
-                          elevation: 6,
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                            child: Row(
-                              children: [
-                                Container(
-                                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                                    child: Image(
-                                        image: AssetImage(
-                                            'images/ic_celular.png'))),
-                                Expanded(
-                                    child: SingleChildScrollView(
-                                        child: Text(
-                                  'Nós queremos te ajudar a ter uma alimentação saudável todos os dias e contamos com um grande parceiro para isso:  a Zona Cerealista Online.',
-                                  style: TextStyle(
-                                      fontFamily: 'NunitoRegular',
-                                      color: browColor,
-                                      fontSize: 15),
-                                )))
-                              ],
+              child: PageView(children: [
+                Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                        margin: EdgeInsets.fromLTRB(34, 34, 34, 0),
+                        height: 144,
+                        child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.0),
                             ),
-                          ))))),
+                            elevation: 6,
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                              child: Row(
+                                children: [
+                                  Container(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                                      child: Image(
+                                          image: AssetImage(
+                                              'images/ic_celular.png'))),
+                                  Expanded(
+                                      child: SingleChildScrollView(
+                                          child: Text(
+                                            'Nós queremos te ajudar a ter uma alimentação saudável todos os dias e contamos com um grande parceiro para isso:  a Zona Cerealista Online.',
+                                            style: TextStyle(
+                                                fontFamily: 'NunitoRegular',
+                                                color: browColor,
+                                                fontSize: 15),
+                                          )))
+                                ],
+                              ),
+                            )))),
+                Container(
+                  color: Colors.cyan,
+                ),
+                Container(
+                  color: Colors.deepPurple,
+                ),
+              ],)),
         ],
       ),
     );

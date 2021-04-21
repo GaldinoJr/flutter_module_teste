@@ -256,7 +256,6 @@ class DotsIndicator extends AnimatedWidget {
   // The distance between the center of each dot
   double _kDotSpacing = 18.0;
 
-
   Widget _buildDot(int index) {
     double selectedness = Curves.easeOut.transform(
       max(
@@ -266,13 +265,7 @@ class DotsIndicator extends AnimatedWidget {
     );
     double zoom = 1.0 + (_kMaxZoom - 1.0) * selectedness;
 
-    var currentColor;
-    if(zoom >= 1 && zoom <= 1.5){
-      currentColor = color;
-    }
-    else{
-      currentColor = selectedColor;
-    }
+    var currentColor = (zoom >= 1 && zoom <= 1.5) ? color : selectedColor;
 
     return new Container(
       width: _kDotSpacing,

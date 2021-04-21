@@ -256,9 +256,6 @@ class DotsIndicator extends AnimatedWidget {
   // The distance between the center of each dot
   double _kDotSpacing = 18.0;
 
-  List lastedZoom = [];
-  List colors = [];
-  List colorsChanged = [];
 
   Widget _buildDot(int index) {
     double selectedness = Curves.easeOut.transform(
@@ -269,32 +266,12 @@ class DotsIndicator extends AnimatedWidget {
     );
     double zoom = 1.0 + (_kMaxZoom - 1.0) * selectedness;
 
-    var currentColor = (zoom == 1) ? color : selectedColor;
-
-    if (lastedZoom.length <= index) {
-      lastedZoom.add(zoom);
-      colorsChanged.add(false);
-      colors.add(currentColor);
-    } else {
-      if (zoom > 1 && zoom < 2) {
-        if (lastedZoom[index] < zoom && !colorsChanged[index]) {
-          currentColor = selectedColor;
-          colorsChanged[index] = true;
-          colors[index] = currentColor;
-        } else if (lastedZoom[index] > zoom && !colorsChanged[index]) {
-          currentColor = color;
-          colorsChanged[index] = true;
-          colors[index] = currentColor;
-        }
-        else{
-          currentColor = colors[index];
-        }
-      } else if (zoom == 2) {
-        for (var i = 0; i < colorsChanged.length; i++) {
-          colorsChanged[i] = false;
-        }
-      }
-      lastedZoom[index] = zoom;
+    var currentColor;
+    if(zoom >= 1 && zoom <= 1.5){
+      currentColor = color;
+    }
+    else{
+      currentColor = selectedColor;
     }
 
     return new Container(

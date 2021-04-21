@@ -214,20 +214,20 @@ Widget indicator4() {
       );
     },
     color: MaterialColor(0xFF79BDC5, indicatorColor),
-    selectedColor:  MaterialColor(0xFF048e9a, selectedIndicatorColor),
+    selectedColor: MaterialColor(0xFF048e9a, selectedIndicatorColor),
   );
 }
 
 class DotsIndicator extends AnimatedWidget {
-  DotsIndicator({
-    this.controller,
-    this.itemCount,
-    this.onPageSelected,
-    this.color: Colors.white,
-    this.selectedColor: Colors.white,
-    this.dotSize = 7.5,
-    this.selectDotSize = 14.0
-  }) : super(listenable: controller);
+  DotsIndicator(
+      {this.controller,
+      this.itemCount,
+      this.onPageSelected,
+      this.color: Colors.white,
+      this.selectedColor: Colors.white,
+      this.dotSize = 7.5,
+      this.selectDotSize = 14.0})
+      : super(listenable: controller);
 
   /// The PageController that this DotsIndicator is representing.
   PageController controller;
@@ -256,6 +256,7 @@ class DotsIndicator extends AnimatedWidget {
   // The distance between the center of each dot
   double _kDotSpacing = 18.0;
 
+  List lastedZoom = [];
   List colors = [];
   List colorsChanged = [];
 
@@ -268,33 +269,33 @@ class DotsIndicator extends AnimatedWidget {
     );
     double zoom = 1.0 + (_kMaxZoom - 1.0) * selectedness;
 
-    var currentColor = (zoom == 1) ? color: selectedColor;
+    var currentColor = (zoom == 1) ? color : selectedColor;
 
-
-    if(colors.length <= index) {
-      colors.add(currentColor);
+    if (lastedZoom.length <= index) {
+      lastedZoom.add(zoom);
       colorsChanged.add(false);
-    }
-    else{
-      var oldColor = colors[index];
-      if(zoom > 1 && zoom < 2){
-        if(!colorsChanged[index]) {
-          currentColor = (oldColor == color) ? selectedColor : color;
-          colors[index] = currentColor;
+      colors.add(currentColor);
+    } else {
+      if (zoom > 1 && zoom < 2) {
+        if (lastedZoom[index] < zoom && !colorsChanged[index]) {
+          currentColor = selectedColor;
           colorsChanged[index] = true;
+          colors[index] = currentColor;
+        } else if (lastedZoom[index] > zoom && !colorsChanged[index]) {
+          currentColor = color;
+          colorsChanged[index] = true;
+          colors[index] = currentColor;
         }
         else{
           currentColor = colors[index];
         }
-      }
-      else  if(zoom == 2){
-        for(var i = 0; i< colorsChanged.length; i++){
+      } else if (zoom == 2) {
+        for (var i = 0; i < colorsChanged.length; i++) {
           colorsChanged[i] = false;
         }
       }
+      lastedZoom[index] = zoom;
     }
-    
-
 
     return new Container(
       width: _kDotSpacing,
@@ -314,8 +315,12 @@ class DotsIndicator extends AnimatedWidget {
     );
   }
 
-  double getSizeByZoom(double zoom){
-    return (zoom == 2) ? selectDotSize : (dotSize * zoom > selectDotSize) ? selectDotSize : dotSize * zoom;
+  double getSizeByZoom(double zoom) {
+    return (zoom == 2)
+        ? selectDotSize
+        : (dotSize * zoom > selectDotSize)
+            ? selectDotSize
+            : dotSize * zoom;
   }
 
   Widget build(BuildContext context) {

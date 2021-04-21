@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
+import 'DotsIndicator.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -69,45 +69,40 @@ Widget _screenBody(String urlImage, String buttonText) {
                 itemBuilder: (_, i) {
                   return pagerDetail(i);
                 },
-                onPageChanged: (int index) {
-                  _currentPageNotifier.value = index;
-                }),
+               ),
             Positioned(
                 bottom: 0.0,
                 left: 0.0,
                 right: 0.0,
                 child: Padding(
                     padding: EdgeInsets.fromLTRB(0, 0, 0, 24),
-                    child: indicator4())),
+                    child: generateDotIndicator())),
           ],
         ))
   ]);
 }
 
-final _currentPageNotifier = ValueNotifier<int>(0);
-final controller = PageController(viewportFraction: 0.8);
-//
-// Widget indicator3() {
-//   return SmoothPageIndicator(
-//     controller: controller, // PageController
-//     count: details.length,
-//     effect: SlideEffect(
-//         dotColor: MaterialColor(0xFF79BDC5, indicatorColor),
-//         activeDotColor: MaterialColor(
-//             0xFF048e9a, selectedIndicatorColor)), // your preferred effect
-//   );
-// }
-//
-// Widget _buildCircleIndicator2() {
-//   return CirclePageIndicator(
-//     size: 8.0,
-//     selectedSize: 14.0,
-//     itemCount: details.length,
-//     currentPageNotifier: _currentPageNotifier,
-//     selectedDotColor: MaterialColor(0xFF048e9a, selectedIndicatorColor),
-//     dotColor: MaterialColor(0xFF79BDC5, indicatorColor),
-//   );
-// }
+
+final _controller = new PageController();
+const _kDuration = const Duration(milliseconds: 300);
+const _kCurve = Curves.ease;
+
+
+Widget generateDotIndicator() {
+  return DotsIndicator(
+    controller: _controller,
+    itemCount: details.length,
+    onPageSelected: (int page) {
+      _controller.animateToPage(
+        page,
+        duration: _kDuration,
+        curve: _kCurve,
+      );
+    },
+    color: MaterialColor(0xFF79BDC5, indicatorColor),
+    selectedColor: MaterialColor(0xFF048e9a, selectedIndicatorColor),
+  );
+}
 
 Widget pagerDetail(int position) {
   MaterialColor browColor = MaterialColor(0xFF8a8a8a, browColors);
@@ -194,109 +189,3 @@ Map<int, Color> indicatorColor = {
   800: Color.fromRGBO(122, 186, 192, .9),
   900: Color.fromRGBO(122, 186, 192, 1),
 };
-
-final _controller = new PageController();
-const _kDuration = const Duration(milliseconds: 300);
-
-const _kCurve = Curves.ease;
-
-final _kArrowColor = Colors.black.withOpacity(0.8);
-
-Widget indicator4() {
-  return DotsIndicator(
-    controller: _controller,
-    itemCount: details.length,
-    onPageSelected: (int page) {
-      _controller.animateToPage(
-        page,
-        duration: _kDuration,
-        curve: _kCurve,
-      );
-    },
-    color: MaterialColor(0xFF79BDC5, indicatorColor),
-    selectedColor: MaterialColor(0xFF048e9a, selectedIndicatorColor),
-  );
-}
-
-class DotsIndicator extends AnimatedWidget {
-  DotsIndicator(
-      {this.controller,
-      this.itemCount,
-      this.onPageSelected,
-      this.color: Colors.white,
-      this.selectedColor: Colors.white,
-      this.dotSize = 7.5,
-      this.selectDotSize = 14.0})
-      : super(listenable: controller);
-
-  /// The PageController that this DotsIndicator is representing.
-  PageController controller;
-
-  /// The number of items managed by the PageController
-  int itemCount;
-
-  /// Called when a dot is tapped
-  ValueChanged<int> onPageSelected;
-
-  /// The color of the dots.
-  ///
-  /// Defaults to `Colors.white`.
-  Color color;
-
-  Color selectedColor;
-
-  // The base size of the dots
-  double dotSize;
-
-  double selectDotSize;
-
-  // The increase in the size of the selected dot
-  double _kMaxZoom = 2.0;
-
-  // The distance between the center of each dot
-  double _kDotSpacing = 18.0;
-
-  Widget _buildDot(int index) {
-    double selectedness = Curves.easeOut.transform(
-      max(
-        0.0,
-        1.0 - ((controller.page ?? controller.initialPage) - index).abs(),
-      ),
-    );
-    double zoom = 1.0 + (_kMaxZoom - 1.0) * selectedness;
-
-    var currentColor = (zoom >= 1 && zoom <= 1.5) ? color : selectedColor;
-
-    return new Container(
-      width: _kDotSpacing,
-      child: new Center(
-        child: new Material(
-          color: currentColor,
-          type: MaterialType.circle,
-          child: new Container(
-            width: getSizeByZoom(zoom),
-            height: getSizeByZoom(zoom),
-            child: new InkWell(
-              onTap: () => onPageSelected(index),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  double getSizeByZoom(double zoom) {
-    return (zoom == 2)
-        ? selectDotSize
-        : (dotSize * zoom > selectDotSize)
-            ? selectDotSize
-            : dotSize * zoom;
-  }
-
-  Widget build(BuildContext context) {
-    return new Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: new List<Widget>.generate(itemCount, _buildDot),
-    );
-  }
-}
